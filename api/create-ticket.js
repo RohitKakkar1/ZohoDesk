@@ -7,6 +7,9 @@ const DESK_HOST = process.env.ZOHO_DESK_HOST || "desk.zoho.in";
 const TOKEN_URL = `https://${ACCOUNTS_HOST}/oauth/v2/token`;
 const TICKETS_URL = `https://${DESK_HOST}/api/v1/tickets`;
 
+// Fixed department ID
+const DEPARTMENT_ID = "1234567890123456789"; // Replace with your actual department ID
+
 function setCorsHeaders(res) {
   res.setHeader("Access-Control-Allow-Origin", "*"); // adjust in production
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
@@ -33,7 +36,7 @@ export default async function handler(req, res) {
   try {
     const body = req.body;
 
-    // --- Validation as per the table ---
+    // --- Validation ---
     if (!body.name) return res.status(400).json({ error: "Name is required." });
     if (!body.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(body.email)) {
       return res.status(400).json({ error: "Valid email is required." });
@@ -54,17 +57,16 @@ export default async function handler(req, res) {
 
     // --- Prepare ticket payload ---
     const ticketPayload = {
-      subject: `Feedback from ${body.name}`, // still using subject for Zoho API
+      subject: `Feedback from ${body.name}`,
       description: body.feedback_message,
       contact: {
         lastName: body.name,
         email: body.email,
       },
-      custom_fields: {
-        whatsapp_country_code: body.whatsapp_country_code,
-        whatsapp_number: body.whatsapp_number,
-        feedback_topic: body.feedback_topic,
-      },
+      departmentId: DEPARTMENT_ID, // Fixed department ID
+      whatsapp_country_code: body.whatsapp_country_code,
+      whatsapp_number: body.whatsapp_number,
+      feedback_topic: body.feedback_topic,
     };
 
     const ticketResponse = await axios.post(TICKETS_URL, ticketPayload, {
