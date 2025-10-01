@@ -8,7 +8,7 @@ const TOKEN_URL = `https://${ACCOUNTS_HOST}/oauth/v2/token`;
 const TICKETS_URL = `https://${DESK_HOST}/api/v1/tickets`;
 
 // Fixed department ID
-const DEPARTMENT_ID = "1892000000006907"; // Replace with your actual department ID
+const DEPARTMENT_ID = "208602000000010772"; // Replace with your actual department ID
 
 function setCorsHeaders(res) {
   res.setHeader("Access-Control-Allow-Origin", "*"); // adjust in production
