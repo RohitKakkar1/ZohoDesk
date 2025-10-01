@@ -10,8 +10,8 @@ import axios from "axios";
  * - If your Zoho account is India, set ZOHO_ACCOUNTS_HOST=accounts.zoho.in and ZOHO_DESK_HOST=desk.zoho.in
  */
 
-const ACCOUNTS_HOST = process.env.ZOHO_ACCOUNTS_HOST || "accounts.zoho.com";
-const DESK_HOST = process.env.ZOHO_DESK_HOST || "desk.zoho.com";
+const ACCOUNTS_HOST = process.env.ZOHO_ACCOUNTS_HOST || "accounts.zoho.in";
+const DESK_HOST = process.env.ZOHO_DESK_HOST || "desk.zoho.in";
 const TOKEN_URL = `https://${ACCOUNTS_HOST}/oauth/v2/token`;
 const TICKETS_URL = `https://${DESK_HOST}/api/v1/tickets`;
 
