@@ -8,7 +8,7 @@ const TOKEN_URL = `https://${ACCOUNTS_HOST}/oauth/v2/token`;
 const TICKETS_URL = `https://${DESK_HOST}/api/v1/tickets`;
 
 // Fixed department ID
-const DEPARTMENT_ID = "1234567890123456789"; // Replace with your actual department ID
+const DEPARTMENT_ID = "1892000000006907"; // Replace with your actual department ID
 
 function setCorsHeaders(res) {
   res.setHeader("Access-Control-Allow-Origin", "*"); // adjust in production
@@ -55,18 +55,17 @@ export default async function handler(req, res) {
 
     const accessToken = await getAccessToken();
 
-    // --- Prepare ticket payload ---
+    // --- Prepare ticket payload using standard Zoho fields ---
     const ticketPayload = {
       subject: `Feedback from ${body.name}`,
       description: body.feedback_message,
+      departmentId: DEPARTMENT_ID, // Fixed department
       contact: {
         lastName: body.name,
         email: body.email,
       },
-      departmentId: DEPARTMENT_ID, // Fixed department ID
-      whatsapp_country_code: body.whatsapp_country_code,
-      whatsapp_number: body.whatsapp_number,
-      feedback_topic: body.feedback_topic,
+      category: body.feedback_topic, // Map feedback_topic → category
+      phone: `${body.whatsapp_country_code} ${body.whatsapp_number}`, // Combine country code + number
     };
 
     const ticketResponse = await axios.post(TICKETS_URL, ticketPayload, {
