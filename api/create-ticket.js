@@ -55,17 +55,17 @@ export default async function handler(req, res) {
 
     const accessToken = await getAccessToken();
 
-    // --- Prepare ticket payload using standard Zoho fields ---
+    // --- Prepare ticket payload ---
     const ticketPayload = {
       subject: `Feedback from ${body.name}`,
       description: body.feedback_message,
-      departmentId: DEPARTMENT_ID, // Fixed department
+      departmentId: DEPARTMENT_ID,
       contact: {
         lastName: body.name,
         email: body.email,
       },
-      category: body.feedback_topic, // Map feedback_topic → category
-      phone: `${body.whatsapp_country_code} ${body.whatsapp_number}`, // Combine country code + number
+      category: body.feedback_topic,
+      phone: `${body.whatsapp_country_code} ${body.whatsapp_number}`,
     };
 
     const ticketResponse = await axios.post(TICKETS_URL, ticketPayload, {
@@ -76,7 +76,28 @@ export default async function handler(req, res) {
       },
     });
 
-    return res.status(200).json({ success: true, ticket: ticketResponse.data });
+    // --- Prepare reduced response ---
+    const reducedData = {
+      name: body.name,
+      whatsapp_country_code: body.whatsapp_country_code,
+      whatsapp_number: body.whatsapp_number,
+      email: body.email,
+      feedback_topic: body.feedback_topic,
+      feedback_message: body.feedback_message,
+      status: "new",
+      response_status: "not_replied",
+      id: ticketResponse.data.id,
+      createdAt: ticketResponse.data.createdTime,
+      updatedAt: ticketResponse.data.modifiedTime,
+      __v: 0
+    };
+
+    return res.status(200).json({
+      status: 200,
+      message: "Feedback Submitted Successfully",
+      data: reducedData
+    });
+
   } catch (err) {
     console.error(err.response?.data || err.message);
     const status = err.response?.status || 500;
