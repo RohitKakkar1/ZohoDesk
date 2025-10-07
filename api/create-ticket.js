@@ -55,11 +55,11 @@ export default async function handler(req, res) {
     if (!body.whatsapp_country_code || !/^\+?\d+$/.test(body.whatsapp_country_code)) {
       return res.status(400).json({ error: "WhatsApp country code must be digits (optional leading +)." });
     }
-    const allowedTopics = ["Feature Request", "Quality of Response", "Accuracy of response", "Other"];
+    const allowedTopics = ["Response Quality / Accuracy on Bot", "Onboarding & Account", "Suggested Features to Add", "Other"];
     if (!body.feedback_topic || !allowedTopics.includes(body.feedback_topic)) {
       return res.status(400).json({ error: `Feedback topic must be one of: ${allowedTopics.join(", ")}` });
     }
-    if (!body.feedback_message) return res.status(400).json({ error: "Feedback message is required." });
+    if (!body.feedback_message) return res.status(400).jon({ error: "Feedback message is required." });
 
     const accessToken = await getAccessToken();
 
