@@ -55,7 +55,7 @@ export default async function handler(req, res) {
     if (!body.whatsapp_country_code || !/^\+?\d+$/.test(body.whatsapp_country_code)) {
       return res.status(400).json({ error: "WhatsApp country code must be digits (optional leading +)." });
     }
-    const allowedTopics = ["Response Quality / Accuracy on Bot", "Onboarding & Account", "Suggested Features to Add", "Other"];
+    const allowedTopics = ["Response Quality / Accuracy on Bot", "Onboarding and Account", "Suggested Features to Add", "Other"];
     if (!body.feedback_topic || !allowedTopics.includes(body.feedback_topic)) {
       return res.status(400).json({ error: `Feedback topic must be one of: ${allowedTopics.join(", ")}` });
     }
