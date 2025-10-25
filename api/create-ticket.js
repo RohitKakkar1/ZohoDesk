@@ -72,7 +72,7 @@ export default async function handler(req, res) {
         lastName: body.name,
         email: body.email,
       },
-      category: body.feedback_topic,
+      classification: body.feedback_topic,
       phone: `${body.whatsapp_country_code} ${body.whatsapp_number}`,
     };
 
